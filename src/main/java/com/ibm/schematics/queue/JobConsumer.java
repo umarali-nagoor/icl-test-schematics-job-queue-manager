@@ -13,7 +13,7 @@ public class JobConsumer {
         log.info("Received job message {}", message);
         log.info("Job spec: " + objectMapper.writeValueAsString(message.getSpec()));
         queue.enqueue(message);
-        log.info("Enqueued job {} depth={}", message.getJobId(), queue.depth());
+        log.info("Enqueued job {} depth={} items", message.getJobId(), queue.depth());
     }
 
     @Scheduled(fixedRate = 1000)

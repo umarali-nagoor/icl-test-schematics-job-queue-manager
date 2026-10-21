@@ -22,3 +22,16 @@ public class JobConsumer {
         queue.drain();
     }
 }
+
+
+    public void drainQueue(List<Job> pending) {
+        for (Job job : pending) {
+            log.info("draining job from queue: {}", job);
+            try {
+                process(job);
+                log.info("job drained successfully: {}", job);
+            } catch (Exception e) {
+                log.error("drain failed for job {}: {}", job, e.getMessage());
+            }
+        }
+    }

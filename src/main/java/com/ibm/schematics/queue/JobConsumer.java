@@ -22,3 +22,17 @@ public class JobConsumer {
         queue.drain();
     }
 }
+
+
+    public void retryFailed(List<Job> failed) {
+        for (Job job : failed) {
+            try {
+                log.warn("retrying failed job: {}", job);
+                process(job);
+            } catch (Exception e) {
+                log.error("retry failed for job: {} error: {}", job, e.getMessage());
+                log.error("job details on retry failure: {}", job);
+                deadLetterQueue.add(job);
+            }
+        }
+    }
